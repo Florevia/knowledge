@@ -11,6 +11,27 @@ npx playwright install chromium
 
 ## Usage
 
+### Web UI
+
+```bash
+npm run web
+```
+
+浏览器打开 `http://localhost:3456`，可以：
+
+1. 粘贴小说详情页或阅读页 URL
+2. 设置「本次爬取章数」和「跳过前 N 章」
+3. 开始爬取并下载 TXT
+
+obnovel 等阅读器站点采用**逐章爬取**：从 URL 中的 `chapter_num` 开始，点击「下一章」连续抓取，不需要预先知道全书总章数。
+
+示例：全书 35 章，分两次爬完：
+
+- 第一次：`chapterCount=20`，`skipChapters=0`
+- 第二次：`chapterCount=15`，`skipChapters=20`
+
+### CLI
+
 ```bash
 npm run crawl -- "https://example.com/book-or-chapter-url"
 ```
@@ -19,12 +40,16 @@ npm run crawl -- "https://example.com/book-or-chapter-url"
 
 ```bash
 npm run crawl -- "https://example.com/book" --out output --delay 1000 --limit 3
+npm run crawl -- "https://example.com/book" --count 20 --skip 0
+npm run crawl -- "https://example.com/book" --count 15 --skip 20
 npm run crawl -- "https://example.com/book" --headful
 ```
 
 - `--out <dir>`：输出目录，默认 `output`。
 - `--delay <ms>`：章节间延迟，默认 `1000`。
 - `--limit <number>`：只抓前 N 章，适合调试站点规则。
+- `--count <number>` / `--skip <number>`：逐章模式，本次爬取章数 / 跳过前 N 章。
+- `--start <number>` / `--end <number>`：目录模式，按章节序号抓取 inclusive 范围。
 - `--headful`：显示浏览器窗口，适合观察动态页面。
 
 ## Test Domains

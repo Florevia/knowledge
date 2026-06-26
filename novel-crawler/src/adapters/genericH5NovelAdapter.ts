@@ -1,6 +1,7 @@
 import type { Page } from "playwright";
 import { cleanChapterText } from "../utils/cleanText.js";
-import type { BookInfo, ChapterContent, ChapterLink, NovelAdapter } from "./types.js";
+import type { BookInfo, ChapterContent, ChapterLink, NovelAdapter, NovelPreview } from "./types.js";
+import { CRAWL_MODE } from "./types.js";
 
 export interface GenericAdapterOptions {
   id: string;
@@ -169,6 +170,7 @@ export const createGenericH5NovelAdapter = (options: GenericAdapterOptions): Nov
 
   return {
     id: options.id,
+    crawlMode: CRAWL_MODE.LIST,
 
     canHandle(url: URL): boolean {
       if (!options.hosts?.length) {
@@ -200,6 +202,17 @@ export const createGenericH5NovelAdapter = (options: GenericAdapterOptions): Nov
       return {
         chapter,
         content: await extractChapterText(page, contentSelectors),
+      };
+    },
+
+    async extractPreview(page: Page, sourceUrl: string): Promise<NovelPreview> {
+      const bookInfo = await this.extractBookInfo(page, sourceUrl);
+
+      return {
+        title: bookInfo.title,
+        author: bookInfo.author,
+        sourceUrl: bookInfo.sourceUrl,
+        crawlMode: CRAWL_MODE.LIST,
       };
     },
   };

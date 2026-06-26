@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Novel Crawler</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Novel Crawler</p>
+        <h1>粘贴链接，指定爬取章数，下载 TXT</h1>
+        <p class="subtitle">
+          适合 obnovel 等阅读器站点：从当前章节开始，按「下一章」连续爬取。全书 35 章想分两次爬，可第一次爬 20 章，第二次跳过 20 章再爬 15 章。
+        </p>
+      </header>
+
+      <section class="card">
+        <label class="field">
+          <span>小说 URL</span>
+          <textarea
+            id="sourceUrl"
+            rows="3"
+            placeholder="https://fb-11-2.h5.obnovel.com/book?book_id=...&chapter_num=1&fid=..."
+          ></textarea>
+        </label>
+
+        <div class="range-grid">
+          <label class="field">
+            <span>本次爬取章数</span>
+            <input id="chapterCount" type="number" min="1" value="20" />
+          </label>
+          <label class="field">
+            <span>跳过前 N 章</span>
+            <input id="skipChapters" type="number" min="0" value="0" />
+          </label>
+          <label class="field">
+            <span>请求间隔 (ms)</span>
+            <input id="delayMs" type="number" min="0" value="1000" />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button id="previewBtn" type="button">识别书名</button>
+          <button id="crawlBtn" type="button" class="primary">开始爬取</button>
+        </div>
+      </section>
+
+      <section id="previewPanel" class="card hidden">
+        <div class="preview-header">
+          <div>
+            <h2 id="bookTitle">-</h2>
+            <p id="bookMeta" class="meta">-</p>
+          </div>
+          <span id="crawlModeBadge" class="badge">sequential</span>
+        </div>
+        <p id="previewHint" class="meta"></p>
+      </section>
+
+      <section id="statusPanel" class="card hidden">
+        <div class="status-row">
+          <strong>任务状态</strong>
+          <span id="jobStatus" class="badge">-</span>
+        </div>
+        <p id="statusMessage" class="meta">等待开始</p>
+        <div class="progress">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p id="progressText" class="meta">0 / 0</p>
+        <a id="downloadLink" class="download hidden" href="#" download>下载 TXT</a>
+      </section>
+
+      <p id="errorMessage" class="error hidden"></p>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

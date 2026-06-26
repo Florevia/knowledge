@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "crawl": "tsx src/cli.ts",
+    "web": "tsx src/server.ts",
     "build": "tsc --noEmit",
     "test": "vitest run"
   },
